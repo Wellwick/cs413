@@ -54,5 +54,8 @@ for i = 1 : size(imSeperate, 2)
     
 end
 
+% Output the seperate images for inspection
+
+seperateImage = imSeperate;
 
 end

@@ -236,3 +236,14 @@ seperateImage(lego);
 % While it would be possible to recrop these images after they have been
 % reorientated, this has been left alone in order to demonstrate how they
 % were originally orientated.
+
+% Testing these methods with new images that I have taken shows similar
+% results. Testing with the image ClusteredFruitWithGrapes.jpg shows a
+% problem with selecting the dark grapes, clustering them in with the
+% background. This may be to do with the luminance produced from the camera
+% flash. 
+
+% Shading around these objects certainly plays a key part
+
+fruit5 = imread('SpreadFruitsComplexBackground.jpg');
+[]

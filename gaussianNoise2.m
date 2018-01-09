@@ -74,7 +74,7 @@ function [thresholdFilter] = thresholdFilter(noisy,image);
         s2nr = snr(image,noisy);
         repetitionCounter = repetitionCounter + 1;
     end
-    disp([num2str(repetitionCounter) num2str(s2nr)]);
+    % disp([num2str(repetitionCounter) num2str(s2nr)]); DEBUGGING VARS
     thresholdFilter = noisy;
     
 end
