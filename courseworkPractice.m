@@ -228,4 +228,11 @@ gaussianNoise2(lego);
 % value, with the assumption that it contains the most background and thus,
 % the least useful information.
 
+seperateImage(lego);
 
+% Seperating out the images makes use of regionprops to determine bounding
+% boxes and orientations for objects.
+
+% While it would be possible to recrop these images after they have been
+% reorientated, this has been left alone in order to demonstrate how they
+% were originally orientated.
