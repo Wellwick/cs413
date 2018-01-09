@@ -178,6 +178,12 @@ disp(['Signal to Noise Ratio is ' num2str(signalToNoiseRatio)]);
 % objects with segment.m.
 % The k-means segmentation is less effective with gaussian noise however.
 
+% Can use medfilt2 to reduce the noise created by the gaussian display.
+% This is completed by noiseFilter.m, however it only performs a single 
+% iteration.
+figure; imshowpair(legoNoisy,noiseFilter(legoNoisy),'montage');
+title("Noisy image and image filtered to remove noise");
+
 % Another attempt at segmentation was performed using activecontour,
 % however this requires a long time for it's iterations, especially for
 % large images like the ones this coursework is working with. For example
@@ -185,9 +191,41 @@ disp(['Signal to Noise Ratio is ' num2str(signalToNoiseRatio)]);
 % resulting in 25 minutes being needed for 300 iterations.
 
 % It might be possible to make use of the boundaries generated through the
-% boundarymask function
+% boundarymask function, however this has not been used for this project.
 legoBoundary = boundarymask(superpixels(lego,500));
 figure; imshowpair(lego,legoBoundary, 'montage');
 
-% Can use medfilt2 to reduce the noise created by the gaussian display
+% gaussianNoise.m displays information for objects found across the base
+% and ten levels of gaussian noise for an image
+gaussianNoise(lego);
+
+% From this it is provable that filtering helps to reduce the amount of
+% erronous elements, however the information is heavily distorted due to
+% the lack of repeated filtering. That is why gaussianNoise2.m repeats the
+% filtering several times, while the signal to noise ratio remains greater
+% than 0.05.
+
+% This is obviously a flawed method, since the snr is not always going to
+% be available to the computer, but this method does return much better
+% results.
+gaussianNoise2(lego);
+
+% Testing the images from the repeating function shows that it successfully
+% finds the different colours as well
+
+% RE part 3 of the task, kmeans_segment is used since it splits up the
+% problem in a specific number of groups which can be displayed. Also, it
+% is possible to discern which of the clusters is the background (for clear
+% background images) by checking snr(image, kmeans_segment(image){k}) where k
+% is a cluster number. Any snr value which is less than 1 will likely be
+% the background image because it contains more of the original image than
+% not. 
+
+% lego3 image is an exception to this assumption but that is because of the
+% complicated background. The closest cluster to 1 covers the majority of
+% the background, however this is still contains some elements that are
+% desired. The implementation could remove the cluster with the lowest snr
+% value, with the assumption that it contains the most background and thus,
+% the least useful information.
+
 

@@ -25,6 +25,8 @@ for k = 1:nColours
     segmented_images{k} = colour;
 end
 
+kmeans_segment = segmented_images;
+
 figure;
 
 % let the selection for different colour segments repeat as many times as
