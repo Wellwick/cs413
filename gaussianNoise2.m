@@ -23,6 +23,19 @@ end
 T = table(sigNoiseR', unfiltered', filtered');
 T.Properties.VariableNames = {'Gaussian_Noise_Level' 'Objects_found_without_filtering' 'Objects_found_with_filtering'}
 
+% Throw a plot up
+figure;
+hold on;
+plot(sigNoiseR', unfiltered', sigNoiseR', filtered');
+xlabel('Signal to Noise Ratio');
+ylabel('Found objects');
+title('Effect of Gaussian Noise on Counted Objects');
+legend('Unfiltered', 'Filtered');
+hold off;
+
+% Return the table as output
+gaussianNoise = T;
+
 %part of the function segment, only collecting the count for objects
 function [objectCount] = objectCount(image)
     %adjust the image through contrast

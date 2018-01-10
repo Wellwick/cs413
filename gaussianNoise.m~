@@ -25,13 +25,8 @@ T.Properties.VariableNames = {'Gaussian_Noise_Level' 'Objects_found_without_filt
 
 % Throw a plot up
 figure;
-hold on;
 plot(sigNoiseR', unfiltered', sigNoiseR', filtered');
-xlabel('Signal to Noise Ratio');
-ylabel('Found objects');
-title('Effect of Gaussian Noise on Counted Objects');
-legend('Unfiltered', 'Filtered');
-hold off;
+xlabel('Signal to Noise Ratio
 
 % Return the information as array output
 gaussianNoise = [sigNoiseR' unfiltered' filtered'];

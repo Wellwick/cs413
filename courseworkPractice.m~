@@ -245,19 +245,15 @@ seperateImage(lego);
 
 % Shading around these objects certainly plays a key part
 
-fruit = imread('SpreadFruitsClearBackground.jpg');
-[segments pixelData] = kSegment(fruit);
+fruit5 = imread('SpreadFruitsClearBackground.jpg');
+[segments pixelData] = kSegment(fruit5);
 % Finding correct segment to show that edges are picked as a k-cluster
 for i = 1 : size(segments, 2)
-    snrTempVal = snr(fruit, segments{i});
+    snrTempVal = snr(fruit5, segments{i});
     if snrTempVal < 13.72 & snrTempVal > 13.71
         figure; imshow(segments{i});
         title("Lighting results in edges of fruit being recognised as a cluster");
     end
 end
 
-% Despite this, the segmentation works quite well for the images, capable
-% of recognising the different objects and seperating them out.
-
-fruit2 = imread('SpreadFruitsComplexBackground.jpg');
-seperateImage(fruit);
+% Despite this 
