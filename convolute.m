@@ -8,5 +8,12 @@ figure;
 %subplot(1,2,1); 
 imshow(image);
 %subplot(1,2,2); 
-figure; imshow(10 * uint8(difference));
+figure; 
+hold on;
+imshow(10 * uint8(difference));
+title('Convolution of image');
+hold off;
+
+pause(0.3);
+
 end

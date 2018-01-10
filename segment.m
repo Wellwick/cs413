@@ -24,6 +24,7 @@ binaryB = im2bw(B, graythresh(B));
 
 binary = imcomplement(binaryR&binaryG&binaryB);
 figure; imshow(binary);
+title('imcomplement of binary image');
 
 se = strel('disk',7);
 cleanedImage = imopen(binary, se);

@@ -23,14 +23,17 @@ subplot(1,2,2); imshow(10 * uint8(lego_diff)); title('Convoluted image highlight
 % test with zero crossings did not produce very useful edge detection
 log = fspecial('log', [15 15], 1.0);
 lego_log = conv2(double(legoGray), log, 'same');
-figure; colormap(gray); imagesc(lego_log); title('Log filtered image');
+figure; 
+colormap(gray); imagesc(lego_log); title('Log filtered image');
 
 lego_zeros = edge(double(legoGray), 'zerocross', 0.025, log);
-figure; colormap gray; imagesc(lego_zeros); title('Zero crossing lego image');
+figure; 
+colormap gray; imagesc(lego_zeros); title('Zero crossing lego image');
 
 %Gradient detection highlights some important info
 [Gmag, Gdir] = imgradient(rgb2gray(lego), 'prewitt');
-figure; imshowpair(Gmag,Gdir, 'montage');
+figure;
+imshowpair(Gmag,Gdir, 'montage');
 title('Gradient magnitude and direction');
 
 % Sobel Edge Filters
@@ -38,7 +41,8 @@ sobel_h = [1 2 1; 0 0 0; -1 -2 -1];
 sobel_v = sobel_h';
 lego_h = conv2(double(legoGray), double(sobel_h), 'same');
 lego_v = conv2(double(legoGray), double(sobel_v), 'same');
-figure; colormap gray;
+figure; 
+colormap gray;
 h1 = subplot(1,2,1); imagesc(lego_h); title('Sobel H Output');
 h2 = subplot(1,2,2); imagesc(lego_v); title('Sobel V Output');
 axis([h1 h2], 'square');
@@ -46,20 +50,26 @@ axis([h1 h2], 'square');
 % Orientation mapping
 omap = atan2(lego_v, lego_h);
 mag = hypot(lego_v, lego_h);
-figure; colormap default;
+figure; 
+colormap default;
 imagesc(omap); title('Sobel Magnitude');
-figure; colormap gray;
+
+figure;
+colormap gray;
 imagesc(mag); title('Sobel Angle');
 
 % Making use of the complex2colour functions
 mag = mag/max(mag(:));
 i = sqrt(-1); % Just so we all know what it means
 z = mag .* exp(i * omap);
-figure; imshow(complex2colour(z));
+figure; 
+imshow(complex2colour(z)); 
+title('Conversion of Sobel Magnitude to complex values');
 
 % So edge detection is a functional option, although it may be possible to
 % use image thresholding
-figure; imshow(legoGray<80); title('Grayscale Lego image threshold at 80');
+figure; 
+imshow(legoGray<80); title('Grayscale Lego image threshold at 80');
 
 % Could further this by thresholding for specific channels
 red = lego(:,:,1);
@@ -75,7 +85,9 @@ subplot(1,3,3); imshow(blue<60); title('Blue thresholded');
 red_logic = red<60;
 green_logic = green<60;
 blue_logic = blue<60;
-figure; imshow(red_logic & green_logic & blue_logic);
+figure; 
+imshow(red_logic & green_logic & blue_logic);
+title("Intersection of all RGB logic colours");
 
 % thresholdColours.m demonstrates the capabilities of this system as a
 % basic classifier. It is not as effective at differentating colours as a
@@ -97,11 +109,15 @@ imClean = imclearborder(imClean);
 % Useful link: https://goo.gl/PGZohy
 
 background = imopen(lego,strel('disk',25));
-figure; surf(double(background(1:8:end,1:8:end))),zlim([0 255]);
+figure; 
+surf(double(background(1:8:end,1:8:end))),zlim([0 255]);
+title("SURF features for image background");
 ax = gca;
 ax.YDir = 'reverse';
+
 % The image with the background subtracted
-figure; imshow(lego - background);
+figure; 
+imshow(lego - background); title("Image with background removal");
 
 % Breaking down the red, green and blue values first does not massively
 % improve things
@@ -114,11 +130,14 @@ blue2 = imtophat(blue,strel('disk', 25));
 red2 = imadjust(red2);
 green2 = imadjust(green2);
 blue2 = imadjust(blue2);
-figure; imshow(cat(3, red2, green2, blue2)); 
+figure; 
+imshow(cat(3, red2, green2, blue2)); 
 title('Background removed and image adjusted');
 
 legoSelect = imtophat(rgb2gray(lego),strel('disk',15));
-figure; imshow(imadjust(legoSelect));
+figure; 
+imshow(imadjust(legoSelect));
+title('imtophat with corresponding image adjustment performed on grayscale image');
 
 % Developed with the K-Means Clustering Tutorial: https://goo.gl/DQnvzV
 % Another useful way of doing colour segmentation is k means clustering
@@ -141,7 +160,8 @@ nColours = 5; % selected number of seperate numbers set to 5
 pixel_labels = reshape(cluster_idx,rows,columns);
 % Because each pixel space has between 1-5, have to imshow with [] so that
 % image doesn't appear as blank indicating a large DisplayRange [low high]
-figure; imshow(pixel_labels, []); title('image labeled by cluster index');
+figure; 
+imshow(pixel_labels, []); title('image labeled by cluster index');
 
 % The seperate coloured objects can then be seen through 
 segmented_images = cell(1,5);
@@ -153,18 +173,21 @@ for k = 1:nColours
     segmented_images{k} = colour;
 end
 
-figure; imshow(segmented_images{1}); title('Objects in first cluster');
+figure; 
+imshow(segmented_images{1}); title('Objects in first cluster');
 
 % First attempt adding noise was not very successful
 redN = awgn(double(red),20);
 greenN = awgn(double(green),20);
 blueN = awgn(double(blue),20);
-figure; imshow(cat(3, redN, greenN, blueN));
+figure; 
+imshow(cat(3, redN, greenN, blueN));
 title('Added White Gaussian Noise across all colours');
 
 % Better method for adding gaussian noise
 legoNoisy = imnoise(lego, 'gaussian');
-figure; imshow(legoNoisy);
+figure; 
+imshow(legoNoisy);
 title('Gaussian Noise added to Lego image');
 
 % The signal to noise ratio can be found by using snr
@@ -181,8 +204,10 @@ disp(['Signal to Noise Ratio is ' num2str(signalToNoiseRatio)]);
 % Can use medfilt2 to reduce the noise created by the gaussian display.
 % This is completed by noiseFilter.m, however it only performs a single 
 % iteration.
-figure; imshowpair(legoNoisy,noiseFilter(legoNoisy),'montage');
+figure; 
+imshowpair(legoNoisy,noiseFilter(legoNoisy),'montage');
 title("Noisy image and image filtered to remove noise");
+
 
 % Another attempt at segmentation was performed using activecontour,
 % however this requires a long time for it's iterations, especially for
@@ -193,7 +218,10 @@ title("Noisy image and image filtered to remove noise");
 % It might be possible to make use of the boundaries generated through the
 % boundarymask function, however this has not been used for this project.
 legoBoundary = boundarymask(superpixels(lego,500));
-figure; imshowpair(lego,legoBoundary, 'montage');
+figure; 
+imshowpair(lego,legoBoundary, 'montage');
+title('Visualisation of boundarymask for lego image');
+
 
 % gaussianNoise.m displays information for objects found across the base
 % and ten levels of gaussian noise for an image
@@ -245,16 +273,19 @@ seperateImage(lego);
 
 % Shading around these objects certainly plays a key part
 
+
 fruit = imread('SpreadFruitsClearBackground.jpg');
 [segments pixelData] = kSegment(fruit);
 % Finding correct segment to show that edges are picked as a k-cluster
+figure;
+title("Lighting results in edges of fruit being recognised as a cluster");
 for i = 1 : size(segments, 2)
     snrTempVal = snr(fruit, segments{i});
     if snrTempVal < 13.72 & snrTempVal > 13.71
-        figure; imshow(segments{i});
-        title("Lighting results in edges of fruit being recognised as a cluster");
+        imshow(segments{i});
     end
 end
+
 
 % Despite this, the segmentation works quite well for the images, capable
 % of recognising the different objects and seperating them out.
